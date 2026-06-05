@@ -1,4 +1,4 @@
-name: Preview Pages
+name: Deploy Pages
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  deploy-preview:
+  deploy-pages:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,19 @@ jobs:
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+
+      - name: Build production
+        run: npm run build
+        env:
+          VITE_BASE_PATH: /granaupp/
+
+      - name: Deploy production
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          keep_files: true
 
       - name: Build preview
         run: npm run build
