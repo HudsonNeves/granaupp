@@ -4,6 +4,6 @@ import { env } from 'node:process'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: env.VITE_BASE_PATH ?? '/granaup/',
+  base: env.VITE_BASE_PATH ?? '/granaupp/',
   plugins: [react()],
 })

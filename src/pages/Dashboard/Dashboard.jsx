@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 import { CardResumo } from '../../components/CardResumo/CardResumo'
 import { DesafioCard } from '../../components/DesafioCard/DesafioCard'
-import { ExportButton } from '../../components/ExportButton/ExportButton'
 import { FeedFinanceiro } from '../../components/FeedFinanceiro/FeedFinanceiro'
+import { FinancialChart } from '../../components/FinancialChart/FinancialChart'
 import { MetaCard } from '../../components/MetaCard/MetaCard'
 import { envelopes } from '../../data/mockData'
 
@@ -22,31 +22,72 @@ const initialChallengeForm = {
   descricao: '',
 }
 
+function getGoalPhrase(objetivo) {
+  const lowerGoal = objetivo.toLowerCase()
+
+  if (lowerGoal === 'comprar um tênis') {
+    return 'a compra do seu tênis'
+  }
+
+  if (lowerGoal.startsWith('comprar ')) {
+    return `a compra de ${lowerGoal.replace('comprar ', '')}`
+  }
+
+  return lowerGoal
+}
+
 function getStatus(saldoLivre, gastos) {
   if (saldoLivre >= gastos * 0.5) {
     return {
-      titulo: 'Grana Segura',
-      descricao: 'Voce ainda tem margem para curtir sem atropelar suas metas.',
+      titulo: 'Grana segura',
+      descricao: 'Você ainda tem margem para curtir sem atropelar suas metas.',
       nivel: 78,
     }
   }
 
   if (saldoLivre > 0) {
     return {
-      titulo: 'Alerta Amarelo',
-      descricao: 'Ainda da para controlar, mas cada gasto novo precisa fazer sentido.',
+      titulo: 'Alerta amarelo',
+      descricao: 'Ainda dá para controlar, mas cada gasto novo precisa fazer sentido.',
       nivel: 48,
     }
   }
 
   return {
-    titulo: 'Modo Sobrevivencia',
+    titulo: 'Modo sobrevivência',
     descricao: 'Hora de pausar gastos livres e proteger o essencial.',
     nivel: 22,
   }
 }
 
-export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }) {
+function getBalanceItems(transacoes) {
+  let balance = 0
+
+  return [...transacoes]
+    .reverse()
+    .map((transaction, index) => {
+      balance += Number(transaction.valor)
+
+      return {
+        id: transaction.id,
+        label: transaction.data === 'Agora' ? `Movimento ${index + 1}` : transaction.data,
+        value: balance,
+      }
+    })
+}
+
+export function Dashboard({
+  appData,
+  chartType,
+  onAddChallenge,
+  onAddTransaction,
+  onChangeChartType,
+  onClearChallenges,
+  onClearExpenses,
+  onDeleteChallenge,
+  onDeleteTransaction,
+  profile,
+}) {
   const [transactionForm, setTransactionForm] = useState(initialTransactionForm)
   const [challengeForm, setChallengeForm] = useState(initialChallengeForm)
   const { desafios, metas, transacoes } = appData
@@ -59,11 +100,21 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
       .filter((transaction) => transaction.valor < 0)
       .reduce((total, transaction) => total + Math.abs(transaction.valor), 0)
     const sonhos = metas.reduce((total, meta) => total + Number(meta.atual), 0)
-    const score = Math.round(sonhos * 2 + desafios.length * 120)
     const saldoLivre = entradas - gastos
 
-    return { entradas, gastos, saldoLivre, score, sonhos }
-  }, [desafios.length, metas, transacoes])
+    return { entradas, gastos, saldoLivre, sonhos }
+  }, [metas, transacoes])
+
+  const balanceItems = useMemo(() => getBalanceItems(transacoes), [transacoes])
+  const summaryItems = [
+    {
+      label: totals.saldoLivre >= 0 ? 'Saldo livre' : 'Saldo negativo',
+      value: Math.abs(totals.saldoLivre),
+      color: totals.saldoLivre >= 0 ? '#7cf7c8' : '#ff8b7f',
+    },
+    { label: 'Gastos', value: totals.gastos, color: '#ff8b7f' },
+    { label: 'Sonhos', value: totals.sonhos, color: '#ffb7ef' },
+  ]
 
   const resumoFinanceiro = [
     {
@@ -82,15 +133,16 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
     },
     {
       id: 3,
-      titulo: 'Score Granaup',
-      valor: totals.score,
-      tipo: 'score',
-      detalhe: 'Pontos de metas e desafios',
+      titulo: 'Total gasto',
+      valor: totals.gastos,
+      tipo: 'negativo',
+      detalhe: 'Saídas registradas no feed',
     },
   ]
 
   const statusDoMes = getStatus(totals.saldoLivre, totals.gastos)
-  const rendaBase = Math.max(totals.entradas, 200)
+  const rendaBase = Math.max(totals.entradas, Number(profile.rendaMensal) || 200)
+  const rendaLabel = profile.rendas?.length ? profile.rendas.join(', ') : profile.renda
   const envelopesCalculados = envelopes.map((envelope) => ({
     ...envelope,
     valor: (rendaBase * envelope.percentual) / 100,
@@ -107,7 +159,7 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
 
     onAddTransaction({
       descricao: transactionForm.descricao.trim(),
-      categoria: transactionForm.categoria,
+      categoria: transactionForm.categoria.trim() || 'Sem categoria',
       valor,
     })
     setTransactionForm(initialTransactionForm)
@@ -127,24 +179,47 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
     setChallengeForm(initialChallengeForm)
   }
 
+  function handleClearExpenses() {
+    const hasExpenses = transacoes.some((transaction) => transaction.valor < 0)
+
+    if (!hasExpenses) {
+      return
+    }
+
+    if (window.confirm('Deseja zerar todos os gastos cadastrados? As entradas serão mantidas.')) {
+      onClearExpenses()
+    }
+  }
+
+  function handleClearChallenges() {
+    if (desafios.length === 0) {
+      return
+    }
+
+    if (window.confirm('Deseja excluir todos os desafios cadastrados?')) {
+      onClearChallenges()
+    }
+  }
+
   return (
     <section className="dashboard">
       <div className="section-heading">
         <div>
           <span className="eyebrow">Feed financeiro</span>
-          <h1>Oi, {profile.avatar.icone} pronto para planejar seu {profile.objetivo.toLowerCase()}?</h1>
-          <p>Sua renda principal cadastrada: {profile.renda}.</p>
+          <h1>
+            Olá! {profile.nome}, pronto para planejar {getGoalPhrase(profile.objetivo)}?
+          </h1>
+          <p>Suas fontes de renda cadastradas: {rendaLabel}.</p>
         </div>
-        <ExportButton data={transacoes} filename="granaup-transacoes.xlsx" />
       </div>
 
       <section className="status-band">
         <div>
-          <span>Status do mes</span>
+          <span>Status do mês</span>
           <h2>{statusDoMes.titulo}</h2>
           <p>{statusDoMes.descricao}</p>
         </div>
-        <div className="thermometer" aria-label={`Termometro em ${statusDoMes.nivel}%`}>
+        <div className="thermometer" aria-label={`Termômetro em ${statusDoMes.nivel}%`}>
           <span style={{ width: `${statusDoMes.nivel}%` }} />
         </div>
       </section>
@@ -155,6 +230,13 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
         ))}
       </div>
 
+      <FinancialChart
+        balanceItems={balanceItems}
+        chartType={chartType}
+        onChangeChartType={onChangeChartType}
+        summaryItems={summaryItems}
+      />
+
       <section className="panel">
         <div className="panel-title">
           <span>Cadastrar agora</span>
@@ -162,7 +244,7 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
         </div>
         <form className="data-form transaction-form" onSubmit={handleTransactionSubmit}>
           <label>
-            Descricao
+            Descrição
             <input
               placeholder="Ex: lanche, pix, bolsa..."
               value={transactionForm.descricao}
@@ -228,11 +310,15 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
       </section>
 
       <div className="content-grid">
-        <FeedFinanceiro transacoes={transacoes} />
+        <FeedFinanceiro
+          onClearExpenses={handleClearExpenses}
+          onDeleteTransaction={onDeleteTransaction}
+          transacoes={transacoes}
+        />
 
         <section className="panel">
           <div className="panel-title">
-            <span>Fabrica de sonhos</span>
+            <span>Fábrica de sonhos</span>
             <h2>Metas visuais</h2>
           </div>
           <div className="stack">
@@ -243,9 +329,14 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
         </section>
 
         <section className="panel">
-          <div className="panel-title">
-            <span>Gamificacao</span>
-            <h2>Desafios ativos</h2>
+          <div className="panel-title challenge-title">
+            <div>
+              <span>Hábitos</span>
+              <h2>Desafios ativos</h2>
+            </div>
+            <button className="danger-action" type="button" onClick={handleClearChallenges}>
+              Zerar desafios
+            </button>
           </div>
           <form className="compact-form" onSubmit={handleChallengeSubmit}>
             <input
@@ -259,7 +350,7 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
               }
             />
             <input
-              placeholder="Recompensa ou regra"
+              placeholder="Regra ou objetivo"
               value={challengeForm.descricao}
               onChange={(event) =>
                 setChallengeForm((currentForm) => ({
@@ -274,7 +365,11 @@ export function Dashboard({ appData, onAddChallenge, onAddTransaction, profile }
           </form>
           <div className="stack">
             {desafios.map((desafio) => (
-              <DesafioCard key={desafio.id} desafio={desafio} />
+              <DesafioCard
+                key={desafio.id}
+                desafio={desafio}
+                onDelete={() => onDeleteChallenge(desafio.id)}
+              />
             ))}
           </div>
         </section>

@@ -1,15 +1,16 @@
 export const avatares = [
-  { id: 'pixel', nome: 'Pixel neon', icone: '🎮', tema: 'neon' },
-  { id: 'street', nome: 'Street pastel', icone: '🛹', tema: 'pastel' },
-  { id: 'focus', nome: 'Foco futuro', icone: '🚀', tema: 'future' },
+  { id: 'money', nome: 'Dinheiro no controle', icone: '💰', tema: 'neon' },
+  { id: 'future', nome: 'Foco no futuro', icone: '🚀', tema: 'future' },
+  { id: 'smart', nome: 'Escolhas inteligentes', icone: '🧠', tema: 'pastel' },
 ]
 
 export const fontesDeRenda = [
-  'Pé de Meia',
+  'Pé-de-Meia',
   'Bolsa Formação',
   'Salário Aprendizagem',
   'Freelance',
   'Mesada',
+  'Bicos eventuais',
 ]
 
 export const objetivosRapidos = [
@@ -19,36 +20,6 @@ export const objetivosRapidos = [
   'Trocar de celular',
   'Montar meu setup',
 ]
-
-export const resumoFinanceiro = [
-  {
-    id: 1,
-    titulo: 'Saldo livre',
-    valor: 236,
-    tipo: 'positivo',
-    detalhe: 'Rolê e gastos do dia a dia',
-  },
-  {
-    id: 2,
-    titulo: 'Guardado nos sonhos',
-    valor: 390,
-    tipo: 'sonho',
-    detalhe: 'Metas protegidas',
-  },
-  {
-    id: 3,
-    titulo: 'Score Granaup',
-    valor: 1280,
-    tipo: 'score',
-    detalhe: 'Pontos acumulados',
-  },
-]
-
-export const statusDoMes = {
-  titulo: 'Grana Segura',
-  descricao: 'Você ainda tem margem para curtir sem atropelar suas metas.',
-  nivel: 72,
-}
 
 export const envelopes = [
   {
@@ -72,7 +43,7 @@ export const envelopes = [
     nome: 'Futuro',
     percentual: 10,
     valor: 20,
-    descricao: 'Reserva escondida para não sumir no impulso.',
+    descricao: 'Reserva para não sumir no impulso.',
     cor: '#ff74d4',
   },
 ]
@@ -94,7 +65,7 @@ export const transacoes = [
     valor: -18,
     data: 'Ontem',
     reacao: '🍔',
-    comentario: 'Cabe no envelope de rolê, mas olho no acumulado.',
+    comentario: 'Cabe no envelope de rolê, mas vale acompanhar o acumulado.',
   },
   {
     id: 3,
@@ -113,7 +84,8 @@ export const metas = [
     nome: 'Ingresso do festival',
     atual: 180,
     objetivo: 400,
-    imagem: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=900&q=80',
+    imagem:
+      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=900&q=80',
     poupancaAutomatica: true,
   },
   {
@@ -121,7 +93,8 @@ export const metas = [
     nome: 'Tênis novo',
     atual: 220,
     objetivo: 480,
-    imagem: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
+    imagem:
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
     poupancaAutomatica: false,
   },
 ]
@@ -130,15 +103,15 @@ export const desafios = [
   {
     id: 1,
     titulo: 'Zero Gasto',
-    descricao: 'Passe a terça sem gastar nada e ganhe uma insígnia.',
+    descricao: 'Passe a terça sem gastar nada e acompanhe seu progresso.',
     progresso: 80,
-    recompensa: '+120 pts',
+    recompensa: '80%',
     insignia: '🏅',
   },
   {
     id: 2,
-    titulo: 'Streak de Economia',
-    descricao: 'Atualize o app por 7 dias seguidos para liberar dicas exclusivas.',
+    titulo: 'Sequência de economia',
+    descricao: 'Atualize o app por 7 dias seguidos para reforçar o hábito.',
     progresso: 57,
     recompensa: '4/7 dias',
     insignia: '🔥',
@@ -173,16 +146,14 @@ export const pagamentos = [
   {
     id: 1,
     titulo: 'Pé-de-Meia',
-    data: '25/05',
-    dias: 2,
+    data: '2026-06-25',
     valor: 200,
     alerta: 'Mantenha a frequência nas aulas para garantir o próximo depósito.',
   },
   {
     id: 2,
     titulo: 'Mesada',
-    data: '01/06',
-    dias: 9,
+    data: '2026-07-01',
     valor: 120,
     alerta: 'Planeje antes de gastar: rolê, sonho e futuro.',
   },

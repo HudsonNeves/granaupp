@@ -1,21 +1,22 @@
 # Granaup
 
-Granaup e um prototipo de aplicativo de educacao financeira para jovens, com foco em metas visuais, controle de gastos em tempo real e uma experiencia mais proxima de redes sociais do que de extratos bancarios tradicionais.
+Granaup é um protótipo de aplicativo de educação financeira para jovens, com foco em metas visuais, controle de gastos em tempo real, gráficos simples e planejamento de recebimentos.
 
-O projeto roda totalmente no front-end, sem backend. As informacoes cadastradas pelo usuario sao salvas localmente no navegador com `localStorage`.
+O projeto roda totalmente no front-end, sem backend. As informações cadastradas pelo usuário são salvas localmente no navegador com `localStorage`.
 
 ## Funcionalidades
 
-- Onboarding com escolha de avatar, fonte de renda e objetivo principal.
+- Onboarding com nome, idade, cidade ou escola, avatar, múltiplas fontes de renda e objetivo principal.
+- Tutorial inicial com explicação didática das principais áreas do aplicativo.
 - Feed financeiro para cadastrar entradas e gastos em tempo real.
-- Status do mes com termometro visual.
-- Regra dos envelopes digitais: 60% role e gastos livres, 30% sonhos e 10% futuro.
-- Fabrica de sonhos com metas visuais, progresso e poupanca automatica.
-- Desafios gamificados e score do app.
-- Educacao financeira em formato de stories.
-- Calculadora de "quantos roles custa isso?".
-- Calendario de pagamentos e alertas de responsabilidade.
-- Exportacao de transacoes para planilha `.xlsx`.
+- Status do mês com termômetro visual.
+- Gráficos financeiros em pizza, barras ou linha, com preferência salva pelo usuário.
+- Regra dos envelopes digitais: 60% rolê e gastos livres, 30% sonhos e 10% futuro.
+- Fábrica de sonhos com metas visuais, progresso e poupança automática.
+- Desafios de hábito sem pontuação ou parcerias comerciais.
+- Educação financeira em formato de stories.
+- Calculadora de "quantos rolês custa isso?".
+- Calendário visual de pagamentos com cálculo automático de dias restantes.
 
 ## Tecnologias
 
@@ -24,18 +25,16 @@ O projeto roda totalmente no front-end, sem backend. As informacoes cadastradas 
 - JavaScript
 - CSS
 - localStorage
-- xlsx
-- file-saver
 
 ## Como Rodar
 
-Versao publicada:
+Versão publicada:
 
 ```text
-https://hudsonneves.github.io/granaup/
+https://hudsonneves.github.io/granaupp/
 ```
 
-Instale as dependencias:
+Instale as dependências:
 
 ```bash
 npm install
@@ -50,13 +49,7 @@ npm run dev
 Acesse:
 
 ```text
-http://localhost:5173/granaup/
-```
-
-Se estiver usando a porta configurada durante o desenvolvimento local:
-
-```text
-http://127.0.0.1:5174/granaup/
+http://localhost:5173/granaupp/
 ```
 
 ## Scripts
@@ -82,7 +75,18 @@ src/
 `-- main.jsx
 ```
 
-## Autor
+## Informações Institucionais
 
-Hudson Neves  
-LinkedIn: [hudson-neves-93664ba4](https://www.linkedin.com/in/hudson-neves-93664ba4/)
+Projeto Integrador desenvolvido por alunos.
+
+Unidade Operativa: CEP Jó Rufino e Carlos Aguiar - Taguatinga
+
+UC 12: Projeto Integrador Desenvolvedor de Aplicações - 60h
+
+Turma: 2025.08.53 - Técnico em Desenvolvimento de Sistemas
+
+Instrutor: Hudson Neves
+
+Projeto desenvolvido para a turma do curso Técnico em Contabilidade do mesmo CEP.
+
+Instrutora: Joelma Leite

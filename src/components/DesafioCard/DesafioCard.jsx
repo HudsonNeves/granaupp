@@ -1,4 +1,4 @@
-export function DesafioCard({ desafio }) {
+export function DesafioCard({ desafio, onDelete }) {
   return (
     <article className="challenge-card">
       <span className="challenge-badge">{desafio.insignia}</span>
@@ -10,6 +10,14 @@ export function DesafioCard({ desafio }) {
         </div>
       </div>
       <strong>{desafio.recompensa}</strong>
+      <button
+        aria-label={`Excluir ${desafio.titulo}`}
+        className="delete-action"
+        type="button"
+        onClick={onDelete}
+      >
+        Excluir
+      </button>
     </article>
   )
 }

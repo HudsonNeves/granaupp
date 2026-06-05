@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { parceiros, storiesFinanceiros } from '../../data/mockData'
+import { storiesFinanceiros } from '../../data/mockData'
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -62,19 +62,6 @@ export function EducacaoFinanceira() {
             <strong>equivale a {roles} rolês</strong>
             <p>Vale trocar essa quantidade de saídas por essa compra?</p>
           </div>
-        </div>
-      </section>
-
-      <section className="panel partner-panel">
-        <div>
-          <span className="eyebrow">Score do app</span>
-          <h2>Pontos podem virar cupons</h2>
-          <p>Ideia para integração futura com marcas parceiras.</p>
-        </div>
-        <div className="partner-list">
-          {parceiros.map((parceiro) => (
-            <span key={parceiro}>{parceiro}</span>
-          ))}
         </div>
       </section>
     </section>

@@ -48,10 +48,10 @@ export function Metas({ appData, onAddGoal, onUpdateGoal, profile }) {
     <section className="page-section">
       <div className="section-heading">
         <div>
-          <span className="eyebrow">Fabrica de sonhos</span>
-          <h1>Guarde com proposito claro.</h1>
+          <span className="eyebrow">Fábrica de sonhos</span>
+          <h1>Guarde com propósito claro.</h1>
           <p>
-            Seu objetivo principal e {profile.objetivo.toLowerCase()}. Cadastre novas metas e
+            Seu objetivo principal é {profile.objetivo.toLowerCase()}. Cadastre novas metas e
             atualize cada progresso sem sair da tela.
           </p>
         </div>
@@ -129,7 +129,7 @@ export function Metas({ appData, onAddGoal, onUpdateGoal, profile }) {
                   onUpdateGoal(meta.id, { poupancaAutomatica: event.target.checked })
                 }
               />
-              <span>Poupanca automatica</span>
+              <span>Poupança automática</span>
             </label>
           </div>
         ))}
@@ -137,10 +137,10 @@ export function Metas({ appData, onAddGoal, onUpdateGoal, profile }) {
 
       <section className="panel automation-panel">
         <div>
-          <span className="eyebrow">Protecao contra impulso</span>
-          <h2>Poupanca automatica</h2>
+          <span className="eyebrow">Proteção contra impulso</span>
+          <h2>Poupança automática</h2>
           <p>
-            Quando o auxilio entrar, 30% vai direto para Sonhos e 10% para Futuro. Voce ainda ve o
+            Quando o auxílio entrar, 30% vai direto para Sonhos e 10% para Futuro. Você ainda vê o
             dinheiro, mas ele fica fora do saldo livre.
           </p>
         </div>

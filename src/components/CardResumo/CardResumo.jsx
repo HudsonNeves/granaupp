@@ -4,12 +4,10 @@ const currencyFormatter = new Intl.NumberFormat('pt-BR', {
 })
 
 export function CardResumo({ titulo, valor, tipo, detalhe }) {
-  const isScore = tipo === 'score'
-
   return (
     <article className={`summary-card summary-card--${tipo}`}>
       <span>{titulo}</span>
-      <strong>{isScore ? `${valor} pts` : currencyFormatter.format(valor)}</strong>
+      <strong>{currencyFormatter.format(valor)}</strong>
       <p>{detalhe}</p>
     </article>
   )
